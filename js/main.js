@@ -51,3 +51,21 @@ if ('IntersectionObserver' in window && revealEls.length) {
 } else {
   revealEls.forEach(el => el.classList.add('is-visible'));
 }
+
+const parallaxImg = document.getElementById('parallaxImg');
+if (parallaxImg && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  let ticking = false;
+  const updateParallax = () => {
+    const rect = parallaxImg.parentElement.getBoundingClientRect();
+    const offset = rect.top * 0.3;
+    parallaxImg.style.transform = `translateY(${offset}px)`;
+    ticking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateParallax);
+      ticking = true;
+    }
+  });
+  updateParallax();
+}
